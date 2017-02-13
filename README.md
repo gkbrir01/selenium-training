@@ -1,2 +1,2 @@
-# selenium-training Grzegorz Kozlowski Warszawa
+# selenium-training Grzegorz Kozlowski
 kurs selenium w qa-courses.com
