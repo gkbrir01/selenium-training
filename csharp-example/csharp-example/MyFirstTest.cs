@@ -5,7 +5,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Chrome;
-using System.Threading;
 
 namespace csharp_example
 {
