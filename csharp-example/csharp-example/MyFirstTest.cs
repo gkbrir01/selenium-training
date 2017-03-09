@@ -7,6 +7,7 @@ using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace csharp_example
 {
@@ -72,9 +73,17 @@ namespace csharp_example
         {
             chromeDriver.Url = "http://www.google.pl";
             chromeDriver.FindElement(By.Name("q")).SendKeys("webdriver");
-            chromeDriver.FindElement(By.Name("btnG")).Click();
-            wait.Until(ExpectedConditions.TitleIs("webdriver - Szukaj w Google"));
+            IWebElement button = chromeDriver.FindElement(By.Name("btnG"));
 
+            if (button.Displayed)
+            {
+                button.Click();
+            }
+            Thread.Sleep(3000);
+
+            wait.Until(ExpectedConditions.TitleIs("webdriver - Szukaj w Google"));
+          
+            
             //cookies
             //Przyłączanie do istniejacej sesji
             chromeDriver.Manage().Cookies.AddCookie(new Cookie("test", "test"));
