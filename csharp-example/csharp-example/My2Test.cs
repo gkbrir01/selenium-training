@@ -280,7 +280,7 @@ namespace csharp_example
                      string countryGeoS = cellsGeoS[1].Text;
                      countriesGeoS.Add(countryGeoS);
                      countriesTempGeoS.Add(countryGeoS);
-                     Console.WriteLine("Country: " + countryGeoS);
+                     //Console.WriteLine("Country: " + countryGeoS);
                  }
                 //Sorting the list of temporary
                 countriesTempGeoS.Sort();
