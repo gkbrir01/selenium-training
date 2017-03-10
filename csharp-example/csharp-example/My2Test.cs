@@ -149,20 +149,39 @@ namespace csharp_example
                 
               }
         }
-//--------------------------------------------------------------------------------------------------------
-//WORK 9
+        //--------------------------------------------------------------------------------------------------------
+        //WORK 9
+
+
+        //The function to validate sort the items in the list
+        public void CheckSortingList(List<string> listC, List<string> listCTemp)
+        {
+            int listItems = listC.Count;
+            for (i = 0; i < listItems; i++)
+            {
+                bool comparison = true;
+                comparison = Comparer.Equals(listC[i], listCTemp[i]);
+                if (!comparison)
+                {
+                    Console.WriteLine("Sorting Wrong "+listC[i]+"  "+ listCTemp[i]);
+                }
+
+            }
+        }
+
         [Test]
         public void Test9()
         {
             List<string> countriesZones = new List<string>();
             List<string> countries = new List<string>();
             List<string> countriesTemp = new List<string>();
-
+         //Login to shop
             driver.Navigate().GoToUrl("http://localhost/litecart/admin");
             driver.FindElement(By.Name("username")).SendKeys("admin");
             driver.FindElement(By.Name("password")).SendKeys("admin");
             driver.FindElement(By.Name("login")).Click();
-
+        
+          //Go to Page Countries
             driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=countries&doc=countries");
 
             IWebElement table = driver.FindElement(By.CssSelector("table.dataTable"));
@@ -173,6 +192,8 @@ namespace csharp_example
                 IList<IWebElement> cells = row.FindElements(By.TagName("td"));
                 string country = cells[4].Text;
                 string zones = cells[5].Text;
+                
+                //Save the side of the country the number of Zones > 0
                 if (zones != "0")
                 {
                     countriesZones.Add(country);
@@ -184,27 +205,21 @@ namespace csharp_example
                     countriesTemp.Add(country);
                   }                
             }
-                    
-            countriesTemp.Sort();
-            //countriesTemp[5]="AAAA";
-            int numberCountries = countries.Count;
-            for (i=0;i < numberCountries; i++)
-            {
-                bool comparison = true;
-                comparison = Comparer.Equals(countries[i], countriesTemp[i]);
-                if (!comparison)
-                {
-                    Console.WriteLine("Sorting Wrong: " + comparison);
-                }
-               
-            }
 
+            //Sorting the list of temporary
+            countriesTemp.Sort();
+           
+            //Checking sort
+            CheckSortingList(countries,countriesTemp);
+
+            //Go to Websites countries the number of Zones> 0
             foreach (string countryZone in countriesZones)
             {
                 List<string> countriesS = new List<string>();
                 List<string> countriesTempS = new List<string>();
 
                 driver.FindElement(By.LinkText(countryZone)).Click();
+                Console.WriteLine("Passage to the side of the country the number of Zones > 0: " + countryZone);
 
                 IWebElement tableS = driver.FindElement(By.CssSelector("table.dataTable"));
                 IList<IWebElement> rowsS = tableS.FindElements(By.CssSelector("tr:not(.header)"));
@@ -212,92 +227,71 @@ namespace csharp_example
                 {
                     IList<IWebElement> cellsS = row.FindElements(By.TagName("td"));
                     string countryS = cellsS[2].Text;
-                    
-                   if (countryS != "")
+
+                    if (countryS != "")
                     {
                         countriesS.Add(countryS);
                         countriesTempS.Add(countryS);
-                        Console.WriteLine("Country: " + countryS);
                     }
-                   
                 }
 
+                //Sorting the list of temporary
                 countriesTempS.Sort();
-                //countriesTemp[5]="AAAA";
-
-                int numberCountriesS= countriesS.Count;
-
-                for (i = 0; i < numberCountriesS; i++)
-                {
-                    bool comparison = true;
-                    comparison = Comparer.Equals(countriesS[i], countriesTempS[i]);
-                    if (!comparison)
-                    {
-                        Console.WriteLine("Sorting Wrong: " + comparison);
-                        break;
-                    }
-
-                }
+                //Checking sort
+                CheckSortingList(countriesS, countriesTempS);
+               
                 Thread.Sleep(2000);
                 driver.Navigate().Back();
                 
             }
-           
+
+            //Go to Page Geo Zones
             driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
-            List<string> countriesGeo = new List<string>();
-           
-            IWebElement tableGeo = driver.FindElement(By.CssSelector("table.dataTable"));
-            IList<IWebElement> rowsGeo = tableGeo.FindElements(By.CssSelector("tr.row"));
+             List<string> countriesGeo = new List<string>();
 
-            foreach (IWebElement rowGeo in rowsGeo)
-            {
-                IList<IWebElement> cellsGeo = rowGeo.FindElements(By.TagName("td"));
-                string countryGeo = cellsGeo[2].Text;
-                countriesGeo.Add(countryGeo);
-                Console.WriteLine("Country: " + countryGeo);
-            }
+             IWebElement tableGeo = driver.FindElement(By.CssSelector("table.dataTable"));
+             IList<IWebElement> rowsGeo = tableGeo.FindElements(By.CssSelector("tr.row"));
 
-            foreach (string countryGeo in countriesGeo)
-            {
 
-                List<string> countriesGeoS = new List<string>();
-                List<string> countriesTempGeoS = new List<string>();
+             foreach (IWebElement rowGeo in rowsGeo)
+             {
+                 IList<IWebElement> cellsGeo = rowGeo.FindElements(By.TagName("td"));
+                 string countryGeo = cellsGeo[2].Text;
+                 countriesGeo.Add(countryGeo);
+                 Console.WriteLine("Country: " + countryGeo);
+             }
 
-                Console.WriteLine("Link do Kraju: " + countryGeo);
+             foreach (string countryGeo in countriesGeo)
+             {
+
+                 List<string> countriesGeoS = new List<string>();
+                 List<string> countriesTempGeoS = new List<string>();
+                //Go to Websites countries
                 driver.FindElement(By.LinkText(countryGeo)).Click();
-                Thread.Sleep(2000);
+                 Thread.Sleep(2000);
 
-                IWebElement tableGeoS = driver.FindElement(By.CssSelector("table.dataTable"));
-                IList<IWebElement> rowsGeoS = tableGeoS.FindElements(By.CssSelector("tr:not(.header)"));
-                int ilZones = rowsGeoS.Count;
+                 IWebElement tableGeoS = driver.FindElement(By.CssSelector("table.dataTable"));
+                 IList<IWebElement> rowsGeoS = tableGeoS.FindElements(By.CssSelector("tr:not(.header)"));
+                 int ilZones = rowsGeoS.Count;
 
-                for (int i=0;i<(ilZones-1);i++)
-                {
-                    IList<IWebElement> cellsGeoS = rowsGeoS[i].FindElements(By.CssSelector("td [selected]"));
-                    string countryGeoS = cellsGeoS[1].Text;
-                    countriesGeoS.Add(countryGeoS);
-                    countriesTempGeoS.Add(countryGeoS);
-                    Console.WriteLine("Kraina: " + countryGeoS);
-                }
-
+                 for (int i=0;i<(ilZones-1);i++)
+                 {
+                     IList<IWebElement> cellsGeoS = rowsGeoS[i].FindElements(By.CssSelector("td [selected]"));
+                     string countryGeoS = cellsGeoS[1].Text;
+                     countriesGeoS.Add(countryGeoS);
+                     countriesTempGeoS.Add(countryGeoS);
+                     Console.WriteLine("Country: " + countryGeoS);
+                 }
+                //Sorting the list of temporary
                 countriesTempGeoS.Sort();
 
-                int liczbKrajowGeoS = countriesGeoS.Count;
-                for (i = 0; i < liczbKrajowGeoS; i++)
-                {
-                    bool porownanie = true;
-                    porownanie = Comparer.Equals(countriesGeoS[i], countriesTempGeoS[i]);
-                    if (!porownanie)
-                    {
-                        Console.WriteLine("Sorting Wrong: " + porownanie);
-                        break;
-                    }
-
-                }
-                driver.Navigate().Back();
-            }
+                //Checking sort
+                CheckSortingList(countriesGeoS, countriesTempGeoS);
+               
+                 driver.Navigate().Back();
+             } 
         }
-//-------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------
         //WORK 10
         [Test]
         public void Test10()
@@ -306,32 +300,29 @@ namespace csharp_example
 
             IWebElement element = driver.FindElement(By.CssSelector("#box-campaigns .link"));
                         
-            //Name Duck Main Page
+            //Name Duck on Main Page
             IWebElement nameElement = driver.FindElement(By.CssSelector("#box-campaigns .name"));
             string nameM = nameElement.GetAttribute("textContent");
                    
-            //Price1 Duck Main Page
+            //Price1 Duck on Main Page
             IWebElement price1Element = driver.FindElement(By.CssSelector("#box-campaigns .regular-price"));
             string price1M = price1Element.Text;
-            //Price1 Color Duck Main Page
+            //Price1 Color Duck on Main Page
             string price1MColor = price1Element.GetCssValue("Color");
-            //Price1 Text-Decoration Duck Main Page
+            //Price1 Text-Decoration Duck on Main Page
             string price1MDeco = price1Element.GetCssValue("text-decoration");
-            
-
-            //Price2 Duck Main Page
+            //Price2 Duck on Main Page
             IWebElement price2Element = driver.FindElement(By.CssSelector("#box-campaigns .campaign-price"));
             string price2M = price2Element.Text;
-            //Price2 Color Duck Main Page
+            //Price2 Color Duck on Main Page
             string price2MColor = price2Element.GetCssValue("Color");
-            //Price1 Text-Decoration Duck Main Page
+            //Price1 Text-Decoration Duck on Main Page
             string price2MDeco = price2Element.GetCssValue("font-weight");
-            
             Thread.Sleep(1000);
             element.Click();
-            Thread.Sleep(4000);
+            Thread.Sleep(2000);
 
-            //Name Duck Product Page
+            //Name Duck on Product Page
             IWebElement nameElementP = driver.FindElement(By.CssSelector("#box-product h1"));
             string nameP = nameElementP.GetAttribute("textContent");
 
@@ -339,15 +330,15 @@ namespace csharp_example
             Console.WriteLine("Comparison Name Duck main page: "+nameP+ " product page: " + nameP);
             NUnit.Framework.Assert.AreEqual(nameM, nameP);
 
-            //Price1 Duck Product Page
+            //Price1 Duck on Product Page
             IWebElement price1ElementP = driver.FindElement(By.CssSelector(".information .regular-price"));
             string price1P = price1ElementP.Text;
-            //Price1 Color Duck Product Page
+            //Price1 Color Duck on Product Page
             string price1PColor = price1ElementP.GetCssValue("Color");
-            //Price1 Text-decoration Duck Product Page
+            //Price1 Text-decoration Duck on Product Page
             string price1PDeco = price1ElementP.GetCssValue("text-decoration");
 
-                  
+            //Comparison of Price1      
             Console.WriteLine("Comparison Price1 Duck main page: " + price1M + " product page: " + price1P);
             NUnit.Framework.Assert.AreEqual(price1M, price1P);
             //Price1 Color comparison - Here is the difference of color
