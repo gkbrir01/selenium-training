@@ -367,6 +367,77 @@ namespace csharp_example
             NUnit.Framework.Assert.AreEqual(price2MDeco, price2PFontW);
         }
 
+        //-------------------------------------------------------------------------------------------------------
+        //WORK 11
+
+        string email = "nazwa7@wp.pl";
+        [Test]
+        public void Test11()
+        {
+            driver.Navigate().GoToUrl("http://localhost/litecart/en/create_account");
+            
+            //Create account
+            driver.FindElement(By.Name("firstname")).SendKeys("Grzegorz");
+            driver.FindElement(By.Name("lastname")).SendKeys("Kozłowowski");
+            driver.FindElement(By.Name("address1")).SendKeys("ul.Magiera 3/22");
+            driver.FindElement(By.Name("postcode")).SendKeys("01-873");
+            driver.FindElement(By.Name("city")).SendKeys("Warszawa");
+            new SelectElement(driver.FindElement(By.CssSelector("select[name=country_code]"))).SelectByValue("PL");
+            driver.FindElement(By.Name("email")).SendKeys(email);
+            driver.FindElement(By.Name("phone")).SendKeys("+48600300000");
+            driver.FindElement(By.Name("password")).SendKeys("elixir");
+            driver.FindElement(By.Name("confirmed_password")).SendKeys("elixir");
+            driver.FindElement(By.Name("create_account")).Click();
+            //Thread.Sleep(2000);
+            
+            //Logout
+            driver.FindElement(By.CssSelector("div#box-account li:nth-child(4)>a")).Click();
+            //Thread.Sleep(2000);
+            
+            //Login
+            driver.FindElement(By.CssSelector("input[name=email]")).SendKeys(email);
+            driver.FindElement(By.CssSelector("input[name=password]")).SendKeys("elixir");
+            driver.FindElement(By.CssSelector("button[name=login]")).Click();
+            //Thread.Sleep(1000);
+            
+            //Logout
+            driver.FindElement(By.CssSelector("div#box-account li:nth-child(4)>a")).Click();
+            //Thread.Sleep(5000);
+
+        }
+
+//-------------------------------------------------------------------------------------------------------
+//WORK 12
+        [Test]
+        public void Test12()
+        {
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin");
+            driver.FindElement(By.Name("username")).SendKeys("admin");
+            driver.FindElement(By.Name("password")).SendKeys("admin");
+            driver.FindElement(By.Name("login")).Click();
+            //Menu Catalog
+            driver.FindElement(By.CssSelector("#app-:nth-child(2)")).Click();
+            //Add New Product
+            driver.FindElement(By.CssSelector(".button:nth-child(2)")).Click();
+
+            //Zapisanie zakładki
+            driver.FindElement(By.CssSelector("button[name = save]")).Click();
+            
+            //Zakładka information
+            driver.FindElement(By.CssSelector(".tabs li: nth-child(2)")).Click();
+
+            //Zapisanie zakładki
+            driver.FindElement(By.CssSelector("button[name = save]")).Click();
+
+            //Zakładka Prices
+            driver.FindElement(By.CssSelector(".tabs li: nth-child(4)")).Click();
+
+            //Zapisanie zakładki
+            driver.FindElement(By.CssSelector("button[name = save]")).Click();
+        }
+
+
+
         [TearDown]
         public void stop()
         {
