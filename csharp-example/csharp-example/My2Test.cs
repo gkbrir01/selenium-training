@@ -406,8 +406,9 @@ namespace csharp_example
 
         }
 
-//-------------------------------------------------------------------------------------------------------
-//WORK 12
+        //-------------------------------------------------------------------------------------------------------
+        //WORK 12
+        string name = "Black Duck";
         [Test]
         public void Test12()
         {
@@ -417,23 +418,83 @@ namespace csharp_example
             driver.FindElement(By.Name("login")).Click();
             //Menu Catalog
             driver.FindElement(By.CssSelector("#app-:nth-child(2)")).Click();
+            Thread.Sleep(2000);
             //Add New Product
             driver.FindElement(By.CssSelector(".button:nth-child(2)")).Click();
+            Thread.Sleep(2000);
+            //Lap General
+            //Status
+            driver.FindElement(By.CssSelector("input[name=status]")).Click();
+            //Name
+            driver.FindElement(By.CssSelector("#tab-general .input-wrapper>input")).SendKeys(name);
+            //Code
+            driver.FindElement(By.CssSelector("#tab-general tr>td>input")).SendKeys("D0005");
+            //Categories
+            driver.FindElement(By.CssSelector("div.input-wrapper input[value='0']")).Click();
+            driver.FindElement(By.CssSelector("div.input-wrapper input[value='1']")).Click();
+            //Product Groups
+            driver.FindElement(By.CssSelector("div.input-wrapper input[value='1-3']")).Click();
+            //Quantity
+            driver.FindElement(By.CssSelector("#tab-general [name=quantity]")).SendKeys("2");
+            //Sold Out Status
+            new SelectElement(driver.FindElement(By.CssSelector("[name=sold_out_status_id]"))).SelectByValue("2");
+            //Upload Images
+            driver.FindElement(By.CssSelector("input[type=file]")).SendKeys(@"C:\Users\Public\Pictures\Sample Pictures\Koala.jpg");
+            Thread.Sleep(10000);
 
-            //Zapisanie zakładki
-            driver.FindElement(By.CssSelector("button[name = save]")).Click();
+            //Lap Information
+            driver.FindElement(By.CssSelector(".tabs li:nth-child(2)")).Click();
+            Thread.Sleep(2000);
+
+            //Manufacturer
+            new SelectElement(driver.FindElement(By.CssSelector("[name=manufacturer_id]"))).SelectByValue("1");
+            //Keywords
+            driver.FindElement(By.CssSelector("[name=keywords]")).SendKeys("Duck");
+
+            //Short Description
+            driver.FindElement(By.CssSelector("[name^=short_description]")).SendKeys("Black Duck");
+
+            //Descripton
+            driver.FindElement(By.CssSelector(".trumbowyg-editor")).SendKeys("Black Duck");
+            //Head Title
+            driver.FindElement(By.CssSelector("[name^=head_title]")).SendKeys("Black Duck");
+            Thread.Sleep(10000);
+
+
+            //Lap Prices
+            driver.FindElement(By.CssSelector(".tabs li:nth-child(4)")).Click();
+            Thread.Sleep(2000);
+            //Purchase Price
+            driver.FindElement(By.CssSelector("[name=purchase_price]")).SendKeys("1");
+            //Type of currency
+            new SelectElement(driver.FindElement(By.CssSelector("[name=purchase_price_currency_code]"))).SelectByValue("USD");
+            //Price
+            driver.FindElement(By.CssSelector("[name = 'prices[USD]']")).SendKeys("20.00");
+            Thread.Sleep(10000);
+            //Save Lap
+            //driver.FindElement(By.CssSelector("button[name = save]")).Click();
+
+            //Menu Catalog
+            driver.FindElement(By.CssSelector("#app-:nth-child(2)>a")).Click();
+            Thread.Sleep(2000);
+
+            //Checking product was added to the system
+            driver.FindElement(By.CssSelector(".dataTable tr:nth-child(3) a")).Click();
+            Thread.Sleep(2000);
+            IWebElement table = driver.FindElement(By.CssSelector("table.dataTable"));
+            IList<IWebElement> rows = table.FindElements(By.CssSelector("tr.row"));
+
+            foreach (IWebElement row in rows)
+            {
+                IList<IWebElement> cells = row.FindElements(By.TagName("td"));
+                string product = cells[2].Text;
+                Console.WriteLine("Product: " + product);
+                if(product==name)
+                {
+                    Console.WriteLine("Product: " + product+ " correctly added to the system");
+                }
+            }
             
-            //Zakładka information
-            driver.FindElement(By.CssSelector(".tabs li: nth-child(2)")).Click();
-
-            //Zapisanie zakładki
-            driver.FindElement(By.CssSelector("button[name = save]")).Click();
-
-            //Zakładka Prices
-            driver.FindElement(By.CssSelector(".tabs li: nth-child(4)")).Click();
-
-            //Zapisanie zakładki
-            driver.FindElement(By.CssSelector("button[name = save]")).Click();
         }
 
 
