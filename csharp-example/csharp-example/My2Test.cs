@@ -367,9 +367,9 @@ namespace csharp_example
             NUnit.Framework.Assert.AreEqual(price2MDeco, price2PFontW);
         }
 
-        //-------------------------------------------------------------------------------------------------------
-        //WORK 11
-
+//-------------------------------------------------------------------------------------------------------
+//WORK 11
+//-------------------------------------------------------------------------------------------------------
         string email = "nazwa7@wp.pl";
         [Test]
         public void Test11()
@@ -406,8 +406,9 @@ namespace csharp_example
 
         }
 
-        //-------------------------------------------------------------------------------------------------------
-        //WORK 12
+//-------------------------------------------------------------------------------------------------------
+//WORK 12
+//-------------------------------------------------------------------------------------------------------
         string name = "Black Duck";
         [Test]
         public void Test12()
@@ -416,68 +417,88 @@ namespace csharp_example
             driver.FindElement(By.Name("username")).SendKeys("admin");
             driver.FindElement(By.Name("password")).SendKeys("admin");
             driver.FindElement(By.Name("login")).Click();
+            
             //Menu Catalog
             driver.FindElement(By.CssSelector("#app-:nth-child(2)")).Click();
-            Thread.Sleep(2000);
+                        
             //Add New Product
             driver.FindElement(By.CssSelector(".button:nth-child(2)")).Click();
             Thread.Sleep(2000);
-            //Lap General
+            
+            //Tab General
             //Status
             driver.FindElement(By.CssSelector("input[name=status]")).Click();
+            
             //Name
             driver.FindElement(By.CssSelector("#tab-general .input-wrapper>input")).SendKeys(name);
+            
             //Code
             driver.FindElement(By.CssSelector("#tab-general tr>td>input")).SendKeys("D0005");
+            
             //Categories
-            driver.FindElement(By.CssSelector("div.input-wrapper input[value='0']")).Click();
+            IWebElement element = driver.FindElement(By.CssSelector("div.input-wrapper input[value='0']"));
+            string check = element.GetAttribute("checked");
+            if(check == "true")
+            {
+                element.Click();
+            }
+
             driver.FindElement(By.CssSelector("div.input-wrapper input[value='1']")).Click();
+                
             //Product Groups
             driver.FindElement(By.CssSelector("div.input-wrapper input[value='1-3']")).Click();
+            
             //Quantity
-            driver.FindElement(By.CssSelector("#tab-general [name=quantity]")).SendKeys("2");
+            IWebElement quantity = driver.FindElement(By.CssSelector("#tab-general [name=quantity]"));
+            quantity.Clear();
+            quantity.SendKeys("20,00");
+            
             //Sold Out Status
             new SelectElement(driver.FindElement(By.CssSelector("[name=sold_out_status_id]"))).SelectByValue("2");
+            
             //Upload Images
             driver.FindElement(By.CssSelector("input[type=file]")).SendKeys(@"C:\Users\Public\Pictures\Sample Pictures\Koala.jpg");
-            Thread.Sleep(10000);
+            //Thread.Sleep(10000);
 
             //Lap Information
             driver.FindElement(By.CssSelector(".tabs li:nth-child(2)")).Click();
-            Thread.Sleep(2000);
-
+            
             //Manufacturer
-            new SelectElement(driver.FindElement(By.CssSelector("[name=manufacturer_id]"))).SelectByValue("1");
+            new SelectElement(driver.FindElement(By.Name("manufacturer_id"))).SelectByValue("1");
+            
             //Keywords
-            driver.FindElement(By.CssSelector("[name=keywords]")).SendKeys("Duck");
-
+            driver.FindElement(By.Name("keywords")).SendKeys("Duck");
+            
             //Short Description
-            driver.FindElement(By.CssSelector("[name^=short_description]")).SendKeys("Black Duck");
-
+            driver.FindElement(By.CssSelector("[name^=short_description]")).SendKeys("name");
+            
             //Descripton
-            driver.FindElement(By.CssSelector(".trumbowyg-editor")).SendKeys("Black Duck");
+            driver.FindElement(By.ClassName("trumbowyg-editor")).SendKeys("Black Duck Black DuckBlack DuckBlack DuckBlack DuckBlack DuckBlack DuckBlack Duck");
+            
             //Head Title
             driver.FindElement(By.CssSelector("[name^=head_title]")).SendKeys("Black Duck");
-            Thread.Sleep(10000);
-
-
+            //Thread.Sleep(10000);
+            
             //Lap Prices
             driver.FindElement(By.CssSelector(".tabs li:nth-child(4)")).Click();
-            Thread.Sleep(2000);
+            
             //Purchase Price
-            driver.FindElement(By.CssSelector("[name=purchase_price]")).SendKeys("1");
+            IWebElement purchase = driver.FindElement(By.Name("purchase_price"));
+            purchase.Clear();
+            purchase.SendKeys("10,00");
+            
             //Type of currency
-            new SelectElement(driver.FindElement(By.CssSelector("[name=purchase_price_currency_code]"))).SelectByValue("USD");
+            new SelectElement(driver.FindElement(By.Name("purchase_price_currency_code"))).SelectByValue("USD");
+            
             //Price
             driver.FindElement(By.CssSelector("[name = 'prices[USD]']")).SendKeys("20.00");
-            Thread.Sleep(10000);
-            //Save Lap
-            //driver.FindElement(By.CssSelector("button[name = save]")).Click();
+            
+            //Save Product
+            driver.FindElement(By.CssSelector("button[name = save]")).Click();
 
             //Menu Catalog
             driver.FindElement(By.CssSelector("#app-:nth-child(2)>a")).Click();
-            Thread.Sleep(2000);
-
+            
             //Checking product was added to the system
             driver.FindElement(By.CssSelector(".dataTable tr:nth-child(3) a")).Click();
             Thread.Sleep(2000);
@@ -497,7 +518,37 @@ namespace csharp_example
             
         }
 
+        [Test]
+        public void Test13()
+        {
+            driver.Navigate().GoToUrl("http://localhost/litecart/en/rubber-ducks-c-1/black-duck-p-6");
+            IWebElement element = driver.FindElement(By.Name("quantity"));
+            element.Clear();
+            element.SendKeys("60");
+            driver.FindElement(By.Name("email")).Click();
+           
+            Thread.Sleep(10000);
+        }
 
+        [Test]
+        public void Test14()
+        {
+            driver.Navigate().GoToUrl("http://localhost/litecart/en/regional_settings");
+            IWebElement element = driver.FindElement(By.CssSelector("[value = '1']"));
+            string check = element.GetAttribute("checked");
+            Console.WriteLine("Checked :" + check);
+
+            if (check == "true")
+            {
+                //element.Click();
+                Thread.Sleep(5000);
+                driver.FindElement(By.CssSelector("[value='0']")).Click();
+                Console.WriteLine("Check Click");
+            }
+            
+
+            Thread.Sleep(10000);
+        }
 
         [TearDown]
         public void stop()
