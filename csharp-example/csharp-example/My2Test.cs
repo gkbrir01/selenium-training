@@ -370,7 +370,7 @@ namespace csharp_example
 //-------------------------------------------------------------------------------------------------------
 //WORK 11
 //-------------------------------------------------------------------------------------------------------
-        string email = "nazwa7@wp.pl";
+        string email = "user@wp.pl";
         [Test]
         public void Test11()
         {
@@ -388,22 +388,18 @@ namespace csharp_example
             driver.FindElement(By.Name("password")).SendKeys("elixir");
             driver.FindElement(By.Name("confirmed_password")).SendKeys("elixir");
             driver.FindElement(By.Name("create_account")).Click();
-            //Thread.Sleep(2000);
-            
+                        
             //Logout
             driver.FindElement(By.CssSelector("div#box-account li:nth-child(4)>a")).Click();
-            //Thread.Sleep(2000);
-            
+                        
             //Login
             driver.FindElement(By.CssSelector("input[name=email]")).SendKeys(email);
             driver.FindElement(By.CssSelector("input[name=password]")).SendKeys("elixir");
             driver.FindElement(By.CssSelector("button[name=login]")).Click();
-            //Thread.Sleep(1000);
-            
+                        
             //Logout
             driver.FindElement(By.CssSelector("div#box-account li:nth-child(4)>a")).Click();
-            //Thread.Sleep(5000);
-
+            
         }
 
 //-------------------------------------------------------------------------------------------------------
@@ -423,8 +419,7 @@ namespace csharp_example
                         
             //Add New Product
             driver.FindElement(By.CssSelector(".button:nth-child(2)")).Click();
-            Thread.Sleep(2000);
-            
+                        
             //Tab General
             //Status
             driver.FindElement(By.CssSelector("input[name=status]")).Click();
@@ -457,9 +452,8 @@ namespace csharp_example
             new SelectElement(driver.FindElement(By.CssSelector("[name=sold_out_status_id]"))).SelectByValue("2");
             
             //Upload Images
-            driver.FindElement(By.CssSelector("input[type=file]")).SendKeys(@"C:\Users\Public\Pictures\Sample Pictures\Koala.jpg");
-            //Thread.Sleep(10000);
-
+            driver.FindElement(By.CssSelector("input[type=file]")).SendKeys(@"C:\Users\Public\Pictures\Sample Pictures\blackduck.jpg");
+            
             //Lap Information
             driver.FindElement(By.CssSelector(".tabs li:nth-child(2)")).Click();
             
@@ -473,7 +467,7 @@ namespace csharp_example
             driver.FindElement(By.CssSelector("[name^=short_description]")).SendKeys("name");
             
             //Descripton
-            driver.FindElement(By.ClassName("trumbowyg-editor")).SendKeys("Black Duck Black DuckBlack DuckBlack DuckBlack DuckBlack DuckBlack DuckBlack Duck");
+            driver.FindElement(By.ClassName("trumbowyg-editor")).SendKeys("Black Duck Black Duck Black Duck Black Duck Black Duck Black Duck Black Duck Black Duck");
             
             //Head Title
             driver.FindElement(By.CssSelector("[name^=head_title]")).SendKeys("Black Duck");
@@ -509,7 +503,6 @@ namespace csharp_example
             {
                 IList<IWebElement> cells = row.FindElements(By.TagName("td"));
                 string product = cells[2].Text;
-                Console.WriteLine("Product: " + product);
                 if(product==name)
                 {
                     Console.WriteLine("Product: " + product+ " correctly added to the system");
@@ -518,37 +511,6 @@ namespace csharp_example
             
         }
 
-        [Test]
-        public void Test13()
-        {
-            driver.Navigate().GoToUrl("http://localhost/litecart/en/rubber-ducks-c-1/black-duck-p-6");
-            IWebElement element = driver.FindElement(By.Name("quantity"));
-            element.Clear();
-            element.SendKeys("60");
-            driver.FindElement(By.Name("email")).Click();
-           
-            Thread.Sleep(10000);
-        }
-
-        [Test]
-        public void Test14()
-        {
-            driver.Navigate().GoToUrl("http://localhost/litecart/en/regional_settings");
-            IWebElement element = driver.FindElement(By.CssSelector("[value = '1']"));
-            string check = element.GetAttribute("checked");
-            Console.WriteLine("Checked :" + check);
-
-            if (check == "true")
-            {
-                //element.Click();
-                Thread.Sleep(5000);
-                driver.FindElement(By.CssSelector("[value='0']")).Click();
-                Console.WriteLine("Check Click");
-            }
-            
-
-            Thread.Sleep(10000);
-        }
 
         [TearDown]
         public void stop()
