@@ -18,6 +18,7 @@ namespace csharp_example
     public class My2Test
     {
         private IWebDriver driver;
+
         //private WebDriverWait wait;
         public const string nazwaPrzegladarki = "Chrome";
         int i = 0;
@@ -61,8 +62,8 @@ namespace csharp_example
             }
 
 
-            driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(20));
-            driver.Manage().Window.Maximize();
+            //driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(20));
+            //driver.Manage().Window.Maximize();
             //wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
         }
 
@@ -509,6 +510,189 @@ namespace csharp_example
                 }
             }
             
+        }
+
+        //-------------------------------------------------------------------------------------------------------
+        //WORK 13
+        [Test]
+        public void Test13()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            driver.Navigate().GoToUrl("http://localhost/litecart");
+
+            //Choice 1 Duck
+            driver.FindElement(By.CssSelector("#box-latest-products .link")).Click();
+            Thread.Sleep(2000);
+            //Choose the size of a duck
+            new SelectElement(driver.FindElement(By.CssSelector("[name='options[Size]']"))).SelectByValue("Medium");
+            //Thread.Sleep(2000);
+
+            IWebElement amountGoods = driver.FindElement(By.CssSelector("#cart-wrapper .quantity"));
+            Console.WriteLine(amountGoods.Text);
+
+            //Add Duck 1 to cart
+            driver.FindElement(By.Name("add_cart_product")).Click();
+            //Thread.Sleep(3000);
+            wait.Until(ExpectedConditions.TextToBePresentInElement(amountGoods, "1"));
+            amountGoods = driver.FindElement(By.CssSelector("#cart-wrapper .quantity"));
+            Console.WriteLine(amountGoods.Text);
+            NUnit.Framework.Assert.IsTrue(amountGoods.Text.Equals("1"));
+
+            //Thread.Sleep(2000);
+            
+            //Go to Main Page
+            driver.FindElement(By.CssSelector(".fa.fa-home")).Click();
+
+            //Choice 2 Duck
+            driver.FindElement(By.CssSelector("#box-latest-products li:nth-child(2)>a.link")).Click();
+            //Thread.Sleep(2000);
+
+            amountGoods = driver.FindElement(By.CssSelector("#cart-wrapper .quantity"));
+            Console.WriteLine(amountGoods.Text);
+
+            //Add Duck2 to cart
+            driver.FindElement(By.Name("add_cart_product")).Click();
+            //Thread.Sleep(2000);
+            wait.Until(ExpectedConditions.TextToBePresentInElement(amountGoods, "2"));
+            amountGoods = driver.FindElement(By.CssSelector("#cart-wrapper .quantity"));
+            Console.WriteLine(amountGoods.Text);
+            NUnit.Framework.Assert.IsTrue(amountGoods.Text.Equals("2"));
+            /*
+            //Go to Main Page
+            driver.FindElement(By.CssSelector(".fa.fa-home")).Click();
+            //Thread.Sleep(2000);
+            //Choice 3 Duck
+            driver.FindElement(By.CssSelector("#box-latest-products li:nth-child(3)>a.link")).Click();
+            //Thread.Sleep(2000);
+
+            amountGoods = driver.FindElement(By.CssSelector("#cart-wrapper .quantity"));
+            Console.WriteLine(amountGoods.Text);
+            //Add Duck3 to cart
+            driver.FindElement(By.Name("add_cart_product")).Click();
+            //Thread.Sleep(2000);
+            wait.Until(ExpectedConditions.TextToBePresentInElement(amountGoods, "3"));
+            amountGoods = driver.FindElement(By.CssSelector("#cart-wrapper .quantity"));
+            Console.WriteLine(amountGoods.Text);
+            NUnit.Framework.Assert.IsTrue(amountGoods.Text.Equals("3"));
+            */
+            //Go to Main Page
+            driver.FindElement(By.CssSelector(".fa.fa-home")).Click();
+            //Thread.Sleep(2000);
+
+            //Opening cart
+            driver.FindElement(By.CssSelector("#cart .link")).Click();
+            Thread.Sleep(4000);
+
+            IWebElement tableCart = driver.FindElement(By.CssSelector(".dataTable.rounded-corners"));
+            IList<IWebElement> rowsCart = tableCart.FindElements(By.CssSelector("tr:not(.header)"));
+            /*
+            //Remove 1 Duck
+            //wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".dataTable.rounded-corners tr:not(.header)")));
+            //driver.FindElement(By.CssSelector(".shortcuts li:first-child")).Click();
+            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.item:nth-child(1) [name=remove_cart_item]")));
+            //driver.FindElement(By.CssSelector("li.item:first-child [name=remove_cart_item]")).Click();
+            //driver.FindElement(By.CssSelector(".shortcuts li:last-child")).Click();
+            //wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[name=remove_cart_item]")));
+            driver.FindElement(By.CssSelector("[name=remove_cart_item]")).Click();
+            //wait.Until(ExpectedConditions.StalenessOf(rows[0]));
+            //Thread.Sleep(2000);
+            Console.WriteLine("Remove 1 Duck");
+            */
+
+            //Remove 2 Duck
+            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".dataTable.rounded-corners tr:not(.header)")));
+            //driver.FindElement(By.CssSelector(".shortcuts li:last-child")).Click();
+            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.item:nth-child(1) [name=remove_cart_item]")));
+            //wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[name=remove_cart_item]")));
+            //driver.FindElement(By.CssSelector("li.item:nth-child(1) [name=remove_cart_item]")).Click();
+            driver.FindElement(By.CssSelector("button[name=remove_cart_item]")).Click();
+            //Thread.Sleep(4000);
+            //driver.FindElement(By.CssSelector("li.item:nth-child(2) [name=remove_cart_item]")).Click();
+            Console.WriteLine("Remove 2 Duck");
+
+            /*
+            //Remove 3 Duck
+            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".dataTable.rounded-corners tr:not(.header)")));
+            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("li.item:nth-child(1) [name=remove_cart_item]"))).Click();
+            //driver.FindElement(By.CssSelector(".inact>img")).Click();
+            //wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[name=remove_cart_item]")));
+            //driver.FindElement(By.CssSelector("[name=remove_cart_item]")).Click();
+            
+            //driver.FindElement(By.CssSelector("[name=remove_cart_item]:first-child")).Click();
+            Console.WriteLine("Remove 3 Duck");
+            Thread.Sleep(5000);
+           */
+
+            //czy tabela zniknęła
+            //wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".dataTable.rounded-corners")));
+            wait.Until(ExpectedConditions.StalenessOf(tableCart));
+            //Go to Main Page
+            driver.FindElement(By.CssSelector(".fa.fa-home")).Click();
+            Thread.Sleep(10000);
+             
+
+
+        }
+
+        bool AreElementsPresent(IWebDriver driver, By locator)
+        {
+            return driver.FindElements(locator).Count > 0;
+        }
+
+        int numberDucks = 3;
+        
+        //WORK 14
+        [Test]
+        public void Test14()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            driver.Navigate().GoToUrl("http://localhost/litecart");
+
+            for (int i = 1; i <= numberDucks; i++)
+            {
+                //Choice Duck
+                driver.FindElement(By.CssSelector("#box-latest-products li:nth-child("+i+")>a.link")).Click();
+                
+                //Checking if the duck has a field Size
+                bool size = AreElementsPresent(driver, By.CssSelector("[name='options[Size]']"));
+                Console.WriteLine(size);
+                if (size)
+                {
+                    new SelectElement(driver.FindElement(By.CssSelector("[name='options[Size]']"))).SelectByValue("Medium");
+                }
+                                             
+                IWebElement amountGoods = driver.FindElement(By.CssSelector("#cart-wrapper .quantity"));
+                Console.WriteLine(amountGoods.Text);
+
+                //Add Duck to cart
+                driver.FindElement(By.Name("add_cart_product")).Click();
+                Thread.Sleep(3000);
+                
+                //Go to Main Page
+                driver.FindElement(By.CssSelector(".fa.fa-home")).Click();
+            }
+           
+            //Opening cart
+            driver.FindElement(By.CssSelector("#cart .link")).Click();
+
+            IWebElement tableCart = driver.FindElement(By.CssSelector(".dataTable.rounded-corners"));
+
+            //Remove Ducks
+            for (int i=1;i<=numberDucks;i++)
+            {
+                IWebElement duckRemove = driver.FindElement(By.CssSelector("[name=remove_cart_item]"));
+                duckRemove.Click();
+                wait.Until(ExpectedConditions.StalenessOf(duckRemove));
+                Console.WriteLine("Remove "+i+" Duck");
+            }
+
+            //Wait until the table disappears
+            wait.Until(ExpectedConditions.StalenessOf(tableCart));
+
+            //Go to Main Page
+            driver.FindElement(By.CssSelector(".fa.fa-home")).Click();
+            Thread.Sleep(10000);
+
         }
 
 
