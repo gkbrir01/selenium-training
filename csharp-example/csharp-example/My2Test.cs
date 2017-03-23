@@ -11,6 +11,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using System.Linq;
 using System.Collections;
+using OpenQA.Selenium.Remote;
 
 namespace csharp_example
 {
@@ -56,12 +57,14 @@ namespace csharp_example
 
             if (nazwaPrzegladarki == "Chrome")
             {
-                //ChromeOptions optionsChrome = new ChromeOptions();
+                ChromeOptions optionsChrome = new ChromeOptions();
+                optionsChrome.AddArguments("start-maximized");
                 //Console.WriteLine(optionsChrome);
-                driver = new ChromeDriver();
+                driver = new ChromeDriver(optionsChrome);
             }
 
-
+            //DesiredCapabilities caps = new DesiredCapabilities();
+           
             //driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(20));
             //driver.Manage().Window.Maximize();
             //wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
@@ -585,6 +588,68 @@ namespace csharp_example
             //Go to Main Page
             driver.FindElement(By.CssSelector(".fa.fa-home")).Click();
             //Thread.Sleep(10000);
+        }
+
+//-------------------------------------------------------------------------------------------------------
+//WORK 14
+//-------------------------------------------------------------------------------------------------------
+        [Test]
+        public void Test14()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            //Login to shop
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin");
+            driver.FindElement(By.Name("username")).SendKeys("admin");
+            driver.FindElement(By.Name("password")).SendKeys("admin");
+            driver.FindElement(By.Name("login")).Click();
+
+            //Go to Page Countries
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=countries&doc=countries");
+            
+            //Add New Country
+            driver.FindElement(By.ClassName("button")).Click();
+            Thread.Sleep(2000);
+
+            //Select links on the page Add New Country
+            IList<IWebElement> links = driver.FindElements(By.CssSelector(".fa.fa-external-link"));
+            int ilosc = links.Count;
+            Console.WriteLine(ilosc);
+
+            foreach (IWebElement link in links)
+            {
+
+                string curentWindow = driver.CurrentWindowHandle;
+                ICollection<string> windows = driver.WindowHandles;
+                int numberWindows =windows.Count;
+                Console.WriteLine("Przed "+numberWindows);
+                link.Click();
+                driver.SwitchTo().Window(curentWindow);
+                Thread.Sleep(2000);
+                
+            Start:
+                windows = driver.WindowHandles;
+                int numberWindowsNow = windows.Count;
+                Console.WriteLine("Po " + numberWindowsNow);
+                if (numberWindows == numberWindowsNow)
+                {
+                    Thread.Sleep(2000);
+                    goto Start;
+                }
+
+                foreach (string window in windows)
+                {
+                    if(window != curentWindow)
+                    {
+                        Console.WriteLine("Przedłączenie okna");
+                        driver.SwitchTo().Window(window);
+                        driver.Close();
+                    }              
+                }
+               
+                driver.SwitchTo().Window(curentWindow);
+                Thread.Sleep(2000);
+            }
+            
         }
 
         [TearDown]
