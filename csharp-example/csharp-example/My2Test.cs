@@ -596,7 +596,6 @@ namespace csharp_example
         [Test]
         public void Test14()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             //Login to shop
             driver.Navigate().GoToUrl("http://localhost/litecart/admin");
             driver.FindElement(By.Name("username")).SendKeys("admin");
@@ -608,28 +607,23 @@ namespace csharp_example
             
             //Add New Country
             driver.FindElement(By.ClassName("button")).Click();
-            Thread.Sleep(2000);
-
+            
             //Select links on the page Add New Country
             IList<IWebElement> links = driver.FindElements(By.CssSelector(".fa.fa-external-link"));
-            int ilosc = links.Count;
-            Console.WriteLine(ilosc);
-
+            
             foreach (IWebElement link in links)
             {
 
                 string curentWindow = driver.CurrentWindowHandle;
                 ICollection<string> windows = driver.WindowHandles;
                 int numberWindows =windows.Count;
-                Console.WriteLine("Przed "+numberWindows);
+                //Select icon with arrow
                 link.Click();
-                driver.SwitchTo().Window(curentWindow);
-                Thread.Sleep(2000);
-                
-            Start:
+                               
+                Start:
                 windows = driver.WindowHandles;
                 int numberWindowsNow = windows.Count;
-                Console.WriteLine("Po " + numberWindowsNow);
+                
                 if (numberWindows == numberWindowsNow)
                 {
                     Thread.Sleep(2000);
@@ -640,14 +634,12 @@ namespace csharp_example
                 {
                     if(window != curentWindow)
                     {
-                        Console.WriteLine("Przedłączenie okna");
                         driver.SwitchTo().Window(window);
                         driver.Close();
                     }              
                 }
                
                 driver.SwitchTo().Window(curentWindow);
-                Thread.Sleep(2000);
             }
             
         }
