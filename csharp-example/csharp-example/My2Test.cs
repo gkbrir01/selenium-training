@@ -658,12 +658,10 @@ namespace csharp_example
 
             //Go to Product Page
             driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=1");
-            Thread.Sleep(2000);
-            
+                        
             for (int i=5;i<=9;i++)
             {
                 driver.FindElement(By.CssSelector(".dataTable tr.row:nth-child("+i+") a:nth-child(1)")).Click();
-                Thread.Sleep(1000);
                 string titlePage = driver.Title;
                 
                 IList<LogEntry> logs = driver.Manage().Logs.GetLog("browser");
@@ -677,38 +675,13 @@ namespace csharp_example
                 }
                 else
                 {
-                    Console.WriteLine("There are no errors on the page " + titlePage);
+                    Console.WriteLine("There are no errors on the page: " + titlePage);
                 }
 
                 driver.Navigate().Back();
-                Thread.Sleep(2000);
              }
         }
-        [Test]
-        public void Test18()
-        {
-            //Login to shop
-            driver.Navigate().GoToUrl("http://onet.pl");
-            string titlePage = driver.Title;
-
-           
-            IList<LogEntry> logs = driver.Manage().Logs.GetLog("browser");
-            if (logs.Count != 0)
-            {
-                Console.WriteLine("Page " + titlePage + " contains the following errors:");
-                foreach (LogEntry log in logs)
-                {
-                    Console.WriteLine(log);
-                }
-            }
-            else
-            {
-                Console.WriteLine("There are no errors on the page " + titlePage);
-            }
-
-        }
-
-
+        
         [TearDown]
         public void stop()
         {
