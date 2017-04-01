@@ -11,6 +11,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using System.Linq;
 using System.Collections;
+using OpenQA.Selenium.Remote;
 
 namespace csharp_example
 {
@@ -20,7 +21,7 @@ namespace csharp_example
         private IWebDriver driver;
 
         //private WebDriverWait wait;
-        public const string nazwaPrzegladarki = "Chrome";
+        public const string nazwaPrzegladarki = "Remote";
         
 
         [SetUp]
@@ -58,21 +59,54 @@ namespace csharp_example
                 driver = new ChromeDriver();
             }
 
+            if (nazwaPrzegladarki == "Remote")
+            {
+                //ChromeOptions optionsChrome = new ChromeOptions();
+                //driver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), DesiredCapabilities.Chrome());
+                //IWebDriver driver;
+                //https://www.browserstack.com
+                //DesiredCapabilities capability = DesiredCapabilities.Chrome();
+                DesiredCapabilities capability = DesiredCapabilities.Edge();
+                capability.SetCapability("browserstack.user", "grzegorzkozowski1");
+                capability.SetCapability("browserstack.key", "4jBobsJ8vpz18qPs4wzs");
+                capability.SetCapability("build", "First build");
+                capability.SetCapability("browserstack.debug", "true");
+                capability.SetCapability("platform", "WINDOWS");
+                //Platform can be one of MAC, WIN8, XP, WINDOWS, and ANY
+                driver = new RemoteWebDriver(
+                  new Uri("http://hub-cloud.browserstack.com/wd/hub/"), capability);
+            }
 
-            driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(20));
-            driver.Manage().Window.Maximize();
+            //driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(20));
+            //driver.Manage().Window.Maximize();
         }
 
 
         [Test]
-        public void Test7()
+        public void Test7R()
         {
-            driver.Navigate().GoToUrl("http://localhost/litecart/admin");
-            driver.FindElement(By.Name("username")).SendKeys("admin");
-            driver.FindElement(By.Name("password")).SendKeys("admin");
-            driver.FindElement(By.Name("login")).Click();
+            driver.Navigate().GoToUrl("http://onet.pl");
+            //driver.FindElement(By.Name("username")).SendKeys("admin");
+            //driver.FindElement(By.Name("password")).SendKeys("admin");
+            //driver.FindElement(By.Name("login")).Click();
+            Thread.Sleep(5000);
+
+
+        }
+
+        [Test]
+        public void Test8R()
+        {
+            driver.Navigate().GoToUrl("http://www.google.com");
+            Console.WriteLine(driver.Title);
+
+            IWebElement query = driver.FindElement(By.Name("q"));
+            query.SendKeys("Browserstack");
+            //query.Submit();
+            driver.FindElement(By.Name("btnG")).Click();
+            Console.WriteLine(driver.Title);
+            Thread.Sleep(5000);
             
-                
         }
 
         [TearDown]
@@ -81,5 +115,6 @@ namespace csharp_example
             driver.Quit();
             driver = null;
         }
+        
     }
 }

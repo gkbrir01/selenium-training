@@ -65,7 +65,7 @@ namespace csharp_example
 
             //DesiredCapabilities caps = new DesiredCapabilities();
            
-            //driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(20));
+            driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(20));
             //driver.Manage().Window.Maximize();
             //wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
         }
@@ -590,9 +590,9 @@ namespace csharp_example
             //Thread.Sleep(10000);
         }
 
-//-------------------------------------------------------------------------------------------------------
-//WORK 14
-//-------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------
+        //WORK 14
+        //-------------------------------------------------------------------------------------------------------
         [Test]
         public void Test14()
         {
@@ -604,26 +604,26 @@ namespace csharp_example
 
             //Go to Page Countries
             driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=countries&doc=countries");
-            
+
             //Add New Country
             driver.FindElement(By.ClassName("button")).Click();
-            
+
             //Select links on the page Add New Country
             IList<IWebElement> links = driver.FindElements(By.CssSelector(".fa.fa-external-link"));
-            
+
             foreach (IWebElement link in links)
             {
 
                 string curentWindow = driver.CurrentWindowHandle;
                 ICollection<string> windows = driver.WindowHandles;
-                int numberWindows =windows.Count;
+                int numberWindows = windows.Count;
                 //Select icon with arrow
                 link.Click();
-                               
-                Start:
+
+            Start:
                 windows = driver.WindowHandles;
                 int numberWindowsNow = windows.Count;
-                
+
                 if (numberWindows == numberWindowsNow)
                 {
                     Thread.Sleep(2000);
@@ -632,17 +632,82 @@ namespace csharp_example
 
                 foreach (string window in windows)
                 {
-                    if(window != curentWindow)
+                    if (window != curentWindow)
                     {
                         driver.SwitchTo().Window(window);
                         driver.Close();
-                    }              
+                    }
                 }
-               
+
                 driver.SwitchTo().Window(curentWindow);
             }
-            
         }
+
+//-------------------------------------------------------------------------------------------------------
+//WORK 17
+//-------------------------------------------------------------------------------------------------------
+        [Test]
+        public void Test17()
+        {
+            //Login to shop
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin");
+            
+            driver.FindElement(By.Name("username")).SendKeys("admin");
+            driver.FindElement(By.Name("password")).SendKeys("admin");
+            driver.FindElement(By.Name("login")).Click();
+
+            //Go to Product Page
+            driver.Navigate().GoToUrl("http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=1");
+            Thread.Sleep(2000);
+            
+            for (int i=5;i<=9;i++)
+            {
+                driver.FindElement(By.CssSelector(".dataTable tr.row:nth-child("+i+") a:nth-child(1)")).Click();
+                Thread.Sleep(1000);
+                string titlePage = driver.Title;
+                
+                IList<LogEntry> logs = driver.Manage().Logs.GetLog("browser");
+                if (logs.Count != 0)
+                {
+                    Console.WriteLine("Page " + titlePage + " contains the following errors:");
+                    foreach (LogEntry log in logs)
+                    {
+                        Console.WriteLine(log);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("There are no errors on the page " + titlePage);
+                }
+
+                driver.Navigate().Back();
+                Thread.Sleep(2000);
+             }
+        }
+        [Test]
+        public void Test18()
+        {
+            //Login to shop
+            driver.Navigate().GoToUrl("http://onet.pl");
+            string titlePage = driver.Title;
+
+           
+            IList<LogEntry> logs = driver.Manage().Logs.GetLog("browser");
+            if (logs.Count != 0)
+            {
+                Console.WriteLine("Page " + titlePage + " contains the following errors:");
+                foreach (LogEntry log in logs)
+                {
+                    Console.WriteLine(log);
+                }
+            }
+            else
+            {
+                Console.WriteLine("There are no errors on the page " + titlePage);
+            }
+
+        }
+
 
         [TearDown]
         public void stop()
