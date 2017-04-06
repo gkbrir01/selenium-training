@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A5E825F7-6924-4F75-8E87-443ED427ABAC}</ProjectGuid>
+    <ProjectGuid>{1588DB02-A792-45C8-9306-5FE5901A1FC6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>csharp_example</RootNamespace>
@@ -65,22 +65,20 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="pages\AdminPanelLoginPage.cs" />
     <Compile Include="app\Application.cs" />
-    <Compile Include="My3Test.cs" />
-    <Compile Include="My2Test.cs" />
-    <Compile Include="MyFirstTest.cs" />
-    <Compile Include="pages\CartPage.cs" />
-    <Compile Include="pages\MainPage.cs" />
+    <Compile Include="pages\CustomerListPage.cs" />
     <Compile Include="pages\Page.cs" />
-    <Compile Include="pages\ProductPage.cs" />
+    <Compile Include="pages\RegistrationPage.cs" />
+    <Compile Include="model\Customer.cs" />
+    <Compile Include="tests\CustomerRegistrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="tests\DucksAddRemove.cs" />
+    <Compile Include="tests\DataProviders.cs" />
     <Compile Include="tests\TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

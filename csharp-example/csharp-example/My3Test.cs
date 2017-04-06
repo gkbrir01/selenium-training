@@ -106,6 +106,7 @@ namespace csharp_example
             driver.FindElement(By.Name("btnG")).Click();
             Console.WriteLine(driver.Title);
             Thread.Sleep(5000);
+        
             
         }
 

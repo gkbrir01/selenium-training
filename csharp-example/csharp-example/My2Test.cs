@@ -531,12 +531,13 @@ namespace csharp_example
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             driver.Navigate().GoToUrl("http://localhost/litecart");
+            Thread.Sleep(2000);
 
             for (int i = 1; i <= numberDucks; i++)
             {
                 //Choice Duck
                 driver.FindElement(By.CssSelector("#box-latest-products li:nth-child(" + i + ")>a.link")).Click();
-
+                Thread.Sleep(3000);
                 //Checking if the duck has a field Size
                 bool size = AreElementsPresent(driver, By.CssSelector("[name='options[Size]']"));
                 if (size)
@@ -549,7 +550,8 @@ namespace csharp_example
                 
                 //Add Duck to cart
                 driver.FindElement(By.Name("add_cart_product")).Click();
-               
+                Thread.Sleep(3000);
+
                 //Waiting for the new number of products in a cart
                 wait.Until(ExpectedConditions.TextToBePresentInElement(amountGoods, "" + i + ""));
                 amountGoods = driver.FindElement(By.CssSelector("#cart-wrapper .quantity"));
@@ -559,10 +561,12 @@ namespace csharp_example
 
                 //Go to Main Page
                 driver.FindElement(By.CssSelector(".fa.fa-home")).Click();
+                Thread.Sleep(2000);
             }
 
             //Opening cart
             driver.FindElement(By.CssSelector("#cart .link")).Click();
+            Thread.Sleep(2000);
 
             IWebElement tableCart = driver.FindElement(By.CssSelector(".dataTable.rounded-corners"));
             IList<IWebElement> rowsCart = tableCart.FindElements(By.CssSelector("tr:not(.header)"));
@@ -573,7 +577,6 @@ namespace csharp_example
                 IWebElement duckRemove = driver.FindElement(By.CssSelector("[name=remove_cart_item]"));
                 duckRemove.Click();
                 //Wait that removed the duck disappeared
-
                 wait.Until(ExpectedConditions.StalenessOf(duckRemove));
                 Console.WriteLine("Remove " + i + " Duck");
 
@@ -587,6 +590,7 @@ namespace csharp_example
 
             //Go to Main Page
             driver.FindElement(By.CssSelector(".fa.fa-home")).Click();
+            Thread.Sleep(2000);
             //Thread.Sleep(10000);
         }
 
