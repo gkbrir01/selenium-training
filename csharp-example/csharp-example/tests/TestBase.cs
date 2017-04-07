@@ -15,6 +15,7 @@ namespace csharp_example
         [TearDown]
         public void stop()
         {
+            
             app.Quit();
             app = null;
         }

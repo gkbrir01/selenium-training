@@ -13,7 +13,7 @@ namespace csharp_example
         public Page(IWebDriver driver)
         {
             this.driver = driver;
-            this.wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            this.wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
 
         }
     }

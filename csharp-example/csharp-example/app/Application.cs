@@ -1,14 +1,9 @@
-﻿using csharp_example.pages;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace csharp_example.app
+
+namespace csharp_example
 {
     public class Application
     {
@@ -25,27 +20,58 @@ namespace csharp_example.app
             productPage = new ProductPage(driver);
             cartPage = new CartPage(driver);
         }
-        
+
         public void Quit()
         {
             driver.Quit();
         }
 
-        internal void choiceAndAddDuckToCart(int nrDuck)
+        public string GetAmountGoods()
+        {
+            return productPage.amountGoods.Text;
+        }
+
+        public IWebElement GetAmountGoodsLocator()
+        {
+            return productPage.amountGoods;
+        }
+
+
+        internal void choiceAndAddDuckToCartAndCheckCart(int numberDucks)
         {
             mainPage.Open();
             Thread.Sleep(1000);
-            
-            //Choice Duck
-            mainPage.ChoiceDuck(nrDuck);
-             
-            //Add Duck to cart
-            productPage.AddDuckToCart("Madium");
-            Thread.Sleep(1000);
 
-            //Go to Main Page
-            productPage.GoToMainPage();           
-            Thread.Sleep(1000);
-         }
+            for (int i = 1; i <= numberDucks; i++)
+            {
+                //Choice Duck
+                mainPage.ChoiceDuck(i);
+                Thread.Sleep(1000);
+                //Add Duck to cart
+                productPage.AddDuckToCart("Medium");
+                Thread.Sleep(1000);
+
+                //Waiting for the new number of products in a cart
+                productPage.CheckAddToCart(i);
+
+                productPage.GoToMainPage();
+            }
+        }
+        
+        internal void RemoveDuckAndCheck(int numberDucks)
+        {
+            mainPage.GoToCart();
+
+            for (int i = numberDucks; i > 0; i--)
+            {
+                cartPage.RemoveDuckAndWait();
+                cartPage.LastRecordDisappearInTableWait(i);
+            }
+
+            cartPage.TableDisappearInPageWait();
+            cartPage.GoToMainPage();
+        }
+
+        
     }
 }

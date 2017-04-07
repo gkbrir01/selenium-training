@@ -3,11 +3,9 @@ using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
-namespace csharp_example.pages
+namespace csharp_example
 {
     internal class ProductPage : Page
     {
@@ -44,7 +42,8 @@ namespace csharp_example.pages
 
         internal void GoToMainPage()
         {
-            toMainPage.Clear();
+            toMainPage.Click();
+            //Thread.Sleep(2000);
         }
 
         internal string GetAmountGoods()
@@ -55,8 +54,16 @@ namespace csharp_example.pages
         internal void AddDuckToCart(string sizeDuck)
         {
             SelectSize(sizeDuck);
-            addDuckToCart.Click(); 
+            addDuckToCart.Click();
+            //Thread.Sleep(2000);
         }
 
+        internal void CheckAddToCart(int nrDucksInCart)
+        {
+            wait.Until(ExpectedConditions.TextToBePresentInElement(amountGoods, "" + nrDucksInCart  + ""));
+            Console.WriteLine("Number of ducks in a cart: " + amountGoods.Text);
+            //Checking the number of products in a cart with a number of added
+            NUnit.Framework.Assert.IsTrue(amountGoods.Text.Equals("" + nrDucksInCart + ""));
+        }
     }
 }

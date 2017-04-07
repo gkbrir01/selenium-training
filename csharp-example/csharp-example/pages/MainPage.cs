@@ -2,11 +2,8 @@
 using OpenQA.Selenium.Support.PageObjects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace csharp_example.pages
+namespace csharp_example
 {
     internal class MainPage : Page
     {
@@ -23,9 +20,17 @@ namespace csharp_example.pages
         [FindsBy(How = How.CssSelector, Using = "#box-latest-products li>a.link")]
         IList<IWebElement> latestDucks;
 
+        [FindsBy(How = How.CssSelector, Using = "#cart .link")]
+        internal IWebElement cartLink;
+
         internal void ChoiceDuck(int i)
         {
-            latestDucks[i].Click();
+            latestDucks[(i-1)].Click();
+        }
+
+        internal void GoToCart()
+        {
+            cartLink.Click();
         }
 
     }
