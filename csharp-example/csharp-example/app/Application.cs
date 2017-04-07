@@ -1,7 +1,5 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System.Threading;
-
 
 namespace csharp_example
 {
@@ -16,6 +14,7 @@ namespace csharp_example
         public Application()
         {
             driver = new ChromeDriver();
+            driver.Manage().Window.Maximize();
             mainPage = new MainPage(driver);
             productPage = new ProductPage(driver);
             cartPage = new CartPage(driver);
@@ -40,17 +39,15 @@ namespace csharp_example
         internal void choiceAndAddDuckToCartAndCheckCart(int numberDucks)
         {
             mainPage.Open();
-            Thread.Sleep(1000);
-
+            
             for (int i = 1; i <= numberDucks; i++)
             {
                 //Choice Duck
                 mainPage.ChoiceDuck(i);
-                Thread.Sleep(1000);
+                
                 //Add Duck to cart
                 productPage.AddDuckToCart("Medium");
-                Thread.Sleep(1000);
-
+                
                 //Waiting for the new number of products in a cart
                 productPage.CheckAddToCart(i);
 
@@ -60,7 +57,7 @@ namespace csharp_example
         
         internal void RemoveDuckAndCheck(int numberDucks)
         {
-            mainPage.GoToCart();
+           mainPage.GoToCart();
 
             for (int i = numberDucks; i > 0; i--)
             {
@@ -68,10 +65,8 @@ namespace csharp_example
                 cartPage.LastRecordDisappearInTableWait(i);
             }
 
-            cartPage.TableDisappearInPageWait();
             cartPage.GoToMainPage();
         }
 
-        
     }
 }

@@ -34,14 +34,7 @@ namespace csharp_example
             wait.Until(ExpectedConditions.StalenessOf(duckRemove));
             Console.WriteLine("Remove Duck");
         }
-
-        internal void TableDisappearInPageWait()
-        {
-            IWebElement tableCart = driver.FindElement(By.CssSelector(".dataTable.rounded-corners"));
-            //Thread.Sleep(2000);
-            wait.Until(ExpectedConditions.StalenessOf(tableCart));
-        }
-
+               
         internal void LastRecordDisappearInTableWait(int nrDuckInCart)
         {
             IWebElement lastRow = driver.FindElement(By.CssSelector(".dataTable.rounded-corners tr:nth-child(" + (nrDuckInCart+1) + ") td.item"));
